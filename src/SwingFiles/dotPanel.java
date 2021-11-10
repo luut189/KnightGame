@@ -7,7 +7,7 @@ import javax.swing.*;
 import Objects.*;
 
 public class dotPanel extends JPanel {
-    public static final int WIDTH = 600;
+    	public static final int WIDTH = 600;
 	public static final int HEIGHT = 400;
 	 
 	public static final int UNIT_SIZE = 1;
@@ -30,7 +30,7 @@ public class dotPanel extends JPanel {
 	public static int jumpPotential = 6;
 	public static int maxHeight = yP - (Y_HEIGHT * jumpPotential);
 
-    public static int delay = 50;
+    	public static int delay = 50;
 
 	Knight knight;
 	Ground ground;

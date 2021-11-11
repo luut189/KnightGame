@@ -9,9 +9,11 @@ public class Knight extends Rectangle {
     
     public static boolean isJumping, right, left, zAction, isFired;
 
-    Timer timer;
+	public static double xVelo = 10;
+	
+	int x, y, width, height;
 
-    int x, y, width, height;
+    Timer timer;
 
     public Knight(int x, int y, int width, int height) {
         this.x = x;
@@ -20,54 +22,48 @@ public class Knight extends Rectangle {
         this.width = width;
     }
 
+	public double newSpeed(double increaseAmount) {
+		return xVelo += increaseAmount;
+	}
+
     public void draw(Graphics g) {
         g.setColor(Color.blue);
         g.fillRect(x, y, width, height);
     }
 
     public void move() {
-		ActionListener taskPerformer = new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//JUMP
-				if(isJumping && y > dotPanel.maxHeight) {
-					if(dotPanel.P_SIZE == 1) {
-						y -= dotPanel.P_SIZE;
-					} else {
-						y -= dotPanel.P_SIZE/5;
-					}
-				}
-				
-				if(!isJumping && y < dotPanel.Y_GROUND - dotPanel.Y_HEIGHT) {
-					if(dotPanel.P_SIZE == 1) {
-						y += dotPanel.P_SIZE;
-					} else {
-						y += dotPanel.P_SIZE/5;
-					}
-				}
-				
-				//LEFT
-				if(left) {
-					if(x <= 0) {} 
-					else {
-						x -= dotPanel.xVelo;
-					}
-				}
-				
-				//RIGHT
-				if(right) {
-					if(x >= dotPanel.WIDTH-dotPanel.X_WIDTH) {} 
-					else {
-						x += dotPanel.xVelo;
-					}
-				}
+		//JUMP
+		if(isJumping && y > dotPanel.maxHeight) {
+			if(dotPanel.P_SIZE == 1) {
+				y -= dotPanel.P_SIZE;
+			} else {
+				y -= dotPanel.P_SIZE/5;
 			}
-		};
+		}
 		
-		timer = new Timer(dotPanel.delay, taskPerformer);	
-		timer.setRepeats(true);
-		timer.start();
+		if(!isJumping && y < dotPanel.Y_GROUND - dotPanel.Y_HEIGHT) {
+			if(dotPanel.P_SIZE == 1) {
+				y += dotPanel.P_SIZE;
+			} else {
+				y += dotPanel.P_SIZE/5;
+			}
+		}
+		
+		//LEFT
+		if(left) {
+			if(x <= 0) {} 
+			else {
+				x -= xVelo;
+			}
+		}
+		
+		//RIGHT
+		if(right) {
+			if(x >= dotPanel.WIDTH-dotPanel.X_WIDTH) {} 
+			else {
+				x += xVelo;
+			}
+		}
 		
 		if(y <= dotPanel.maxHeight) {
 			isJumping = false;

@@ -24,19 +24,19 @@ public class dotPanel extends JPanel {
 	 
 	public static int X_WIDTH = UNIT_SIZE * P_SIZE;
 	public static int Y_HEIGHT = UNIT_SIZE * P_SIZE;
-	 
-	public static double xVelo = 10;
 	
 	public static int jumpPotential = 6;
 	public static int maxHeight = yP - (Y_HEIGHT * jumpPotential);
 
-    public static int delay = 50;
+	Timer timer;
+	private int FPS = 1000/60;
 
 	Knight knight;
 	Ground ground;
 
 	dotPanel() {
 		newObject();
+		knight.newSpeed(10);
 
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setFocusable(true);
@@ -66,7 +66,22 @@ public class dotPanel extends JPanel {
 		
 		knight.draw(g);
 		ground.draw(g);
-		move();
+		runner();
+		
+	}
+
+	public void runner() {
+		ActionListener taskPerformer = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				move();
+			}
+		};
+		
+		timer = new Timer(FPS, taskPerformer);
+		timer.setRepeats(true);
+		timer.start();
 	}
 	
 	public void move() {

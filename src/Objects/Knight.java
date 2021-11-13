@@ -2,24 +2,22 @@ package Objects;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.Timer;
+
+import Spells.*;
 import SwingFiles.*;
 
 public class Knight extends Rectangle {
     
     public static boolean isJumping, right, left, zAction, isFired;
-
 	public static double xVelo = 10;
 	
-	int x, y, width, height;
-
-    Timer timer;
+	public static int x, y, width, height;
 
     public Knight(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.height = height;
-        this.width = width;
+        Knight.x = x;
+        Knight.y = y;
+        Knight.height = height;
+        Knight.width = width;
     }
 
 	public double newSpeed(double increaseAmount) {
@@ -34,19 +32,15 @@ public class Knight extends Rectangle {
     public void move() {
 		//JUMP
 		if(isJumping && y > dotPanel.maxHeight) {
-			if(dotPanel.P_SIZE == 1) {
-				y -= dotPanel.P_SIZE;
-			} else {
-				y -= dotPanel.P_SIZE/5;
-			}
+			y -= dotPanel.P_SIZE/5;
 		}
 		
-		if(!isJumping && y < dotPanel.Y_GROUND - dotPanel.Y_HEIGHT) {
-			if(dotPanel.P_SIZE == 1) {
-				y += dotPanel.P_SIZE;
-			} else {
-				y += dotPanel.P_SIZE/5;
-			}
+		if(!isJumping && y < dotPanel.Y_GROUND - height) {
+			y += dotPanel.P_SIZE/5;
+		}
+		
+		if(y <= dotPanel.maxHeight) {
+			isJumping = false;
 		}
 		
 		//LEFT
@@ -59,17 +53,27 @@ public class Knight extends Rectangle {
 		
 		//RIGHT
 		if(right) {
-			if(x >= dotPanel.WIDTH-dotPanel.X_WIDTH) {} 
+			if(x > dotPanel.WIDTH-width) {} 
 			else {
 				x += xVelo;
 			}
 		}
-		
-		if(y <= dotPanel.maxHeight) {
-			isJumping = false;
-		}
 	}
 
+	public void action() {
+		if(zAction) {
+			Spells.getXY();
+			isFired = true;
+		}
+		if(isFired) {
+			Spells.x += xVelo;
+		}
+		if(Spells.x > dotPanel.WIDTH) {
+			Spells.x = 0;
+			Spells.y = 0;
+			isFired = false;
+		}
+	}
 
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
@@ -79,17 +83,12 @@ public class Knight extends Rectangle {
                 isJumping = true;
             }
         }
-        if(e.getKeyCode() == KeyEvent.VK_Z) {
-            zAction = true;
-        }
+        if(e.getKeyCode() == KeyEvent.VK_Z) zAction = true;
     }
 
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_LEFT) left = false;
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) right = false;
-        if(e.getKeyCode() == KeyEvent.VK_Z) {
-            zAction = false;
-            isFired = true;
-        }
+		if(e.getKeyCode() == KeyEvent.VK_Z) zAction = false;
     }
 }

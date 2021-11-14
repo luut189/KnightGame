@@ -53,7 +53,7 @@ public class Knight extends Rectangle {
         
         //RIGHT
         if(right) {
-            if(x > dotPanel.WIDTH-width) {} 
+            if(x >= dotPanel.WIDTH-width) {} 
             else {
                 x += xVelo;
             }
